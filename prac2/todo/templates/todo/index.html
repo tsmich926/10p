@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+  <h1>Todo</h1>
+  <hr />
+    {% for td in todos %}
+      {% if request.user == td.author %}
+        <p>{{td.author}} {{td.title}}</p>
+        {% if td.completed == True %}
+          <form action="{% url 'todo:cancel' td.pk %}" method= "POST" id="cancel-form">
+            {% csrf_token %}
+            <input type="submit" value="취소하기" id="cancel-btn" />
+          </form>
+        {% else %}
+          <form action="{% url 'todo:complete' td.pk %}" method= "POST" id="complete-form">
+            {% csrf_token %}
+            <input type="submit" value="완료하기" id="complete-btn" />
+          </form>
+      {% endif %}
+      <form action="{% url 'todo:delete' td.pk %}" method= "POST" id="delete-form">
+        {% csrf_token %}
+        <input type="submit" value="삭제하기" id="delete-btn" />
+      </form><br>
+      {% endif %}  
+    {% endfor %}
+    <hr />
+  
+
+{% endblock content %}
+
